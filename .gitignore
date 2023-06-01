@@ -5,3 +5,5 @@ node_modules/
 
 # Ignore dist folder
 dist/
+
+yarn-error.log

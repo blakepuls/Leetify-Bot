@@ -257,7 +257,15 @@ async function getLinks(): Promise<string[]> {
   }
 })();
 
-setInterval(async () => {
+let isUploading = false;
+
+async function processUploads() {
+  // If there's an ongoing upload process, do nothing.
+  if (isUploading) {
+    return;
+  }
+
+  isUploading = true;
   const links = await getLinks();
   const demos: Demo[] = JSON.parse(fs.readFileSync("./uploaded.json", "utf-8"));
 
@@ -293,4 +301,10 @@ setInterval(async () => {
       sendDiscordMessage(uploaded);
     }
   }
-}, 3 * 60 * 1000);
+
+  // Reset the lock variable and schedule the next execution.
+  isUploading = false;
+  setTimeout(processUploads, 3 * 60 * 1000);
+}
+
+processUploads();

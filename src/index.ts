@@ -152,9 +152,9 @@ async function uploadDemo(file: string): Promise<LeetifyResponse | null> {
     // Add new vod
     await page.goto("https://leetify.com/app/data-sources");
     console.log("Waiting for page to load 2");
-    await page.waitForNavigation({
-      waitUntil: "load",
-    });
+    // await page.waitForNavigation({
+    //   waitUntil: "load",
+    // });
 
     console.log("Pressing button");
 

@@ -242,3 +242,41 @@ async function getLinks(): Promise<string[]> {
     }
   }
 })();
+
+setInterval(async () => {
+  const links = await getLinks();
+  const demos: Demo[] = JSON.parse(fs.readFileSync("./uploaded.json", "utf-8"));
+
+  for (const link of links) {
+    if (!demos.find((demo) => demo.fileName === link)) {
+      // Download the link
+      const downloaded = await downloadDemo(link);
+
+      if (!downloaded) {
+        console.log("Failed to download demo");
+        continue;
+      }
+
+      // Upload the link
+      const uploaded = await uploadDemo(link);
+      fs.unlinkSync(`./demos/${link}`);
+
+      if (!uploaded) {
+        console.log("Failed to upload demo");
+        continue;
+      }
+      // Add link to uploaded.json
+      demos.push({
+        leetifyId: uploaded.id,
+        fileName: link,
+      });
+      fs.writeFileSync("./uploaded.json", JSON.stringify(demos, null, 2));
+
+      console.log(
+        `Demo uploaded: https://leetify.com/app/match-details/${uploaded.gameId}/overview`
+      );
+
+      sendDiscordMessage(uploaded);
+    }
+  }
+}, 3 * 60 * 1000);

@@ -4,14 +4,9 @@ import { load } from "cheerio";
 import https from "https";
 import { TextChannel, Client, EmbedBuilder } from "discord.js";
 import dotenv from "dotenv";
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 
 dotenv.config();
-
-// Disable SSL for internal network, this is not recommended for production
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-});
 
 if (!process.env.DISCORD_TOKEN) throw new Error("No bot token provided");
 
@@ -65,11 +60,7 @@ async function downloadDemo(url: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(`./demos/${url}`);
     const request = https.get(
-      {
-        host: process.env.DEMO_HOST,
-        path: `/CSGO_10Mans/${url}`,
-        agent: httpsAgent,
-      },
+      `https://${process.env.DEMO_HOST}/${url}`,
       function (response) {
         response.pipe(file);
         response.on("end", function () {
@@ -195,12 +186,7 @@ async function uploadDemo(file: string): Promise<LeetifyResponse | null> {
 }
 
 async function getLinks(): Promise<string[]> {
-  const response = await fetch(
-    `https://${process.env.DEMO_HOST}/CSGO_10Mans/`,
-    {
-      agent: httpsAgent,
-    }
-  );
+  const response = await fetch(`https://${process.env.DEMO_HOST}/CSGO_10Mans/`);
   const body = await response.text();
   const $ = load(body);
 

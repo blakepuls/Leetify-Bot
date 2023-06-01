@@ -18,6 +18,8 @@ if (!process.env.LEETIFY_PASSWORD)
 if (!process.env.DISCORD_CHANNEL_ID)
   throw new Error("No Discord channel id provided");
 
+if (!process.env.DEMO_HOST) throw new Error("No demo host provided");
+
 const discord = new Client({
   intents: ["GuildMessages", "Guilds"],
 });

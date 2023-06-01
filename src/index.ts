@@ -151,9 +151,14 @@ async function uploadDemo(file: string): Promise<LeetifyResponse | null> {
     await page.goto("https://leetify.com/app/data-sources");
     await page.waitForNavigation();
 
+    console.log("Pressing button");
+
     const res = await page.waitForXPath(
       "//button[contains(., 'Select demo file')]"
     );
+
+    console.log(res);
+
     // Get element handle from element
     const elementHandle = res as ElementHandle<Element>;
     elementHandle.click();

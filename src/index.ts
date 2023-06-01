@@ -58,9 +58,9 @@ interface Demo {
 async function downloadDemo(url: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(`./demos/${url}`);
-    console.log(`https://demos.karma-gaming.net/CSGO_10Mans/${url}`);
+    console.log(`https://.../${url}`);
     const request = https.get(
-      `https://demos.karma-gaming.net/CSGO_10Mans/${url}`,
+      `https://.../CSGO_10Mans/${url}`,
       function (response) {
         response.pipe(file);
         response.on("end", function () {
@@ -186,7 +186,7 @@ async function uploadDemo(file: string): Promise<LeetifyResponse | null> {
 }
 
 async function getLinks(): Promise<string[]> {
-  const response = await fetch("https://demos.karma-gaming.net/CSGO_10Mans/");
+  const response = await fetch("https://.../CSGO_10Mans/");
   const body = await response.text();
   const $ = load(body);
 

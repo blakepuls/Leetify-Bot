@@ -219,43 +219,43 @@ async function getLinks(): Promise<string[]> {
 }
 
 // uploadFile("test.dem");
-(async () => {
-  const links = await getLinks();
-  const demos: Demo[] = JSON.parse(fs.readFileSync("./uploaded.json", "utf-8"));
+// (async () => {
+//   const links = await getLinks();
+//   const demos: Demo[] = JSON.parse(fs.readFileSync("./uploaded.json", "utf-8"));
 
-  for (const link of links) {
-    if (!demos.find((demo) => demo.fileName === link)) {
-      // Download the link
-      const downloaded = await downloadDemo(link);
+//   for (const link of links) {
+//     if (!demos.find((demo) => demo.fileName === link)) {
+//       // Download the link
+//       const downloaded = await downloadDemo(link);
 
-      if (!downloaded) {
-        console.log("Failed to download demo");
-        continue;
-      }
+//       if (!downloaded) {
+//         console.log("Failed to download demo");
+//         continue;
+//       }
 
-      // Upload the link
-      const uploaded = await uploadDemo(link);
-      fs.unlinkSync(`./demos/${link}`);
+//       // Upload the link
+//       const uploaded = await uploadDemo(link);
+//       fs.unlinkSync(`./demos/${link}`);
 
-      if (!uploaded) {
-        console.log("Failed to upload demo");
-        continue;
-      }
-      // Add link to uploaded.json
-      demos.push({
-        leetifyId: uploaded.id,
-        fileName: link,
-      });
-      fs.writeFileSync("./uploaded.json", JSON.stringify(demos, null, 2));
+//       if (!uploaded) {
+//         console.log("Failed to upload demo");
+//         continue;
+//       }
+//       // Add link to uploaded.json
+//       demos.push({
+//         leetifyId: uploaded.id,
+//         fileName: link,
+//       });
+//       fs.writeFileSync("./uploaded.json", JSON.stringify(demos, null, 2));
 
-      console.log(
-        `Demo uploaded: https://leetify.com/app/match-details/${uploaded.gameId}/overview`
-      );
+//       console.log(
+//         `Demo uploaded: https://leetify.com/app/match-details/${uploaded.gameId}/overview`
+//       );
 
-      sendDiscordMessage(uploaded);
-    }
-  }
-})();
+//       sendDiscordMessage(uploaded);
+//     }
+//   }
+// })();
 
 let isUploading = false;
 

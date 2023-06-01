@@ -145,10 +145,13 @@ async function uploadDemo(file: string): Promise<LeetifyResponse | null> {
     const loginButton = await page.$("input[value='Sign in']");
     loginButton?.click();
 
+    console.log("Waiting for page to load");
+
     await page.waitForNavigation();
 
     // Add new vod
     await page.goto("https://leetify.com/app/data-sources");
+    console.log("Waiting for page to load 2");
     await page.waitForNavigation();
 
     console.log("Pressing button");
